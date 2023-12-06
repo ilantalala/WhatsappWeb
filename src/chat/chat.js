@@ -9,9 +9,7 @@ function Chat(){
   const location = useLocation();
   const { user } = location.state
   const [send,setSend]=useState([]);
-  var counter = 0;
-  var index = findKey(ChatArray, user.username, counter);
- 
+  console.log(user)
     return(
         <div className="tbody">
         <div className="container">

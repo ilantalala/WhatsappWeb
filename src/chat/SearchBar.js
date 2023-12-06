@@ -86,7 +86,6 @@ function SearchBar({ user,setSend }) {
             var diff=myChat.children.length-ImplementedChild.length
             for(var i=myChat.children.length-1;i>=diff;i--){
               var child=myChat.children[i]
-              console.log("i"+i+"-th Child is: ",child)
               myChat.removeChild(child);
             }
             ImplementedChild.splice(0, ImplementedChild.length);

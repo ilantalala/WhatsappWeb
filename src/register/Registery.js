@@ -35,11 +35,63 @@ function Registery() {
       profilePic: selectedImageSrc,
       time: "10:52",
       lastmessage: "hey noa",
-      ArrayUsers:[]
+      ArrayUsers:[],
+      token: " "
     };
     ContactArray.push(contact)
-  
-    navigate('/Chat', { state: { user:contact }})
+    async function createUser(){
+      const user={
+        username: contact.username,
+        password: contact.password,
+        displayName: contact.displayName,
+        profilePic: contact.profilePic,
+        token:""
+      }
+      if(user.profilePic==null){
+        console.log("profilePic:", user.profilePic)
+       user.profilePic='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png'
+      }
+     
+      console.log("user: ", user)
+      const res= await fetch('http://localhost:5000/api/Users',{
+        'method':'post',
+        'headers':{
+          'Content-Type':'application/json',
+        },
+        'body':JSON.stringify(user)
+      })  
+      console.log("the res is: ",res)
+      if(res.status==200){
+         async function postToken(){
+          const userDetails={username:user.username, password:user.password}
+          const response=await fetch('http://localhost:5000/api/Tokens',{
+            'method':'post',
+            'headers':{
+              'Content-Type':'application/json',
+            },
+            'body':JSON.stringify(userDetails)
+          })
+          response.text().then(data => {
+            const token = data.trim(); // Trim any whitespace if needed
+            console.log(token); // Output the token to the console or use it as needed
+            user.token=token
+           
+            navigate('/Chat', { state: { user:user }})
+          }).catch(error => {
+            console.error('Error reading response text:', error);
+          });
+       
+         }
+         postToken() 
+      }
+      else{
+        console.error('current User:', user);
+      }
+      
+    }
+    createUser()
+    // console.error('currentUser:', currentUser);
+   
   }
 }
   }
